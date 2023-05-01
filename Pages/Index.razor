@@ -1,6 +1,7 @@
 ﻿@page "/"
 
 <PageTitle>Index</PageTitle>
+<h1>INDEX</h1>
 
 @if(Items == null)
 {
@@ -18,7 +19,6 @@ else
 
 @code{
     public List<GameUpdate> Items;
-    public bool isLoading = true;
     public List<string> IgnoreProps = new() { "Id" };
 
     protected override async Task OnInitializedAsync()
