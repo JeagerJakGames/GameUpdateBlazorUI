@@ -1,6 +1,6 @@
 ﻿<div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
-        <a class="navbar-brand" href="">GameUpdateBlazorUI</a>
+        <a class="navbar-brand" href="">Jeager Jak Games</a>
         <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -9,21 +9,14 @@
 
 <div class="@NavMenuCssClass nav-scrollable" @onclick="ToggleNavMenu">
     <nav class="flex-column">
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="oi oi-home" aria-hidden="true"></span> Home
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="counter">
-                <span class="oi oi-plus" aria-hidden="true"></span> Counter
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="fetchdata">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Fetch data
-            </NavLink>
-        </div>
+        @foreach(var tupl in Links)
+        {
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="@tupl.Item1" Match="EvaluateMatch(tupl.Item1)">
+                    <span class="@tupl.Item3" aria-hidden="true"></span> @tupl.Item2
+                </NavLink>
+            </div>
+        }
     </nav>
 </div>
 
@@ -31,6 +24,24 @@
     private bool collapseNavMenu = true;
 
     private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+    private List<Tuple<string,string,string>> Links = new()
+    {
+        new("","HOME","oi oi-home"),
+        new("counter","Counter","oi oi-plus"),
+        new("about","About"," oi"),
+        new("social", "Social Media", "oi"),
+        new("support-us", "Support Us", "oi"),
+        new("games", "Games", "oi"),
+        new("game-updates", "Game Updates", "oi")
+    };
+
+    private NavLinkMatch EvaluateMatch(string index)
+    {
+        if (index == "") return NavLinkMatch.All;
+
+        return NavLinkMatch.Prefix;
+    }
 
     private void ToggleNavMenu()
     {

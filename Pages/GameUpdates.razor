@@ -1,0 +1,18 @@
+﻿@page "/game-updates/{gameId:int?}/{anotherId:int?}"
+@inject NavigationManager navManager
+<h3>GameUpdates</h3>
+<span class="material-icons">
+    dashboard
+</span>
+
+<h2>@gameId</h2>
+<h2>@anotherId</h2>
+
+@code {
+    [Parameter]
+    public int? gameId { get; set; }
+    [Parameter]
+    public int? anotherId { get; set; }
+
+
+}

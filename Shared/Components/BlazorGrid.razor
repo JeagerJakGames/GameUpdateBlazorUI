@@ -34,7 +34,6 @@
 @functions {
     int totalPages;
     int curPage;
-    int pagerSize;
     int startPage;
     int endPage;
 
@@ -45,14 +44,13 @@
     [Parameter]
     public IEnumerable<TableItem> Items { get; set; }
     [Parameter]
-    public int PageSize { get; set; }
+    public int PageSize { get; set; } = 5;
 
     IEnumerable<TableItem> ItemList { get; set; }
 
     protected override Task OnInitializedAsync()
     {
 
-        pagerSize = 5;
         curPage = 1;
 
         ItemList = Items.Skip((curPage - 1) * PageSize).Take(PageSize);
@@ -74,9 +72,9 @@
         if (direction == "forward" && endPage < totalPages)
         {
             startPage = endPage + 1;
-            if (endPage + pagerSize < totalPages)
+            if (endPage +PageSize < totalPages)
             {
-                endPage = startPage + pagerSize - 1;
+                endPage = startPage +PageSize - 1;
             }
             else
             {
@@ -87,7 +85,7 @@
         else if (direction == "back" && startPage > 1)
         {
             endPage = startPage - 1;
-            startPage = startPage - pagerSize;
+            startPage = startPage -PageSize;
         }
     }
 
