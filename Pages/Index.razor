@@ -1,0 +1,40 @@
+﻿@page "/"
+
+<PageTitle>Index</PageTitle>
+
+@if(Items == null)
+{
+    <h3>Loading...</h3>
+}
+else
+{
+    <JeaTable _List="@Items" Ignore="@IgnoreProps" />
+}
+    
+
+
+
+
+
+@code{
+    public List<GameUpdate> Items;
+    public bool isLoading = true;
+    public List<string> IgnoreProps = new() { "Id" };
+
+    protected override async Task OnInitializedAsync()
+    {
+        
+        Items = await GetItmes();
+    }
+
+    public async Task<List<GameUpdate>> GetItmes()
+    {
+        List<GameUpdate> updates = new();
+
+        for (int i = 0; i < 100; i++)
+        {
+            updates.Add(new() { Id = i, Name = $"Name{i}", UpdateDate = DateTime.Now.AddDays(i), FullDetails = $"Details ::: {i}", ShortDetails = $"Short Hand {i}" });
+        }
+        return updates;
+    }
+}

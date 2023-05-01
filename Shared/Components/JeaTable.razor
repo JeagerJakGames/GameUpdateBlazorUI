@@ -1,0 +1,55 @@
+﻿@using System.Reflection
+@typeparam T
+
+@if (_List != null && _List.Count() > 0)
+{
+        <BlazorGrid Items="@_List" PageSize="@DisplayCount">
+            <GridHeader>
+            @foreach (PropertyInfo prop in _List.FirstOrDefault().GetType().GetProperties())
+            {
+                if (Ignore != null)
+                {
+                    if (!Ignore.Any(x => x.Equals(prop.Name, StringComparison.InvariantCultureIgnoreCase)))
+                    {
+                                        <th>@prop.Name</th>
+                    }
+                }
+                else
+                {
+                                <th>@prop.Name</th>
+                }
+            }
+            </GridHeader>
+            <GridRow>
+            @foreach (PropertyInfo prop in context.GetType().GetProperties())
+            {
+                if (Ignore != null)
+                {
+                    if (!Ignore.Any(x => x.Equals(prop.Name, StringComparison.InvariantCultureIgnoreCase)))
+                    {
+                                        <td>
+                            @prop.GetValue(context,null)
+                                        </td>
+                    }
+                }
+                else
+                {
+                                <td>
+                        @prop.GetValue(context,null)
+                                </td>
+                }
+
+            }
+            </GridRow>
+        </BlazorGrid>
+}
+
+
+@code {
+    [Parameter]
+    public IEnumerable<T> _List { get; set; }
+    [Parameter]
+    public int DisplayCount { get; set; } = 10;
+    [Parameter]
+    public List<string>? Ignore { get; set; }
+}
