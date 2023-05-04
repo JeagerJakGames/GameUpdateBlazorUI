@@ -1,4 +1,8 @@
-﻿@inherits LayoutComponentBase
+﻿@using System.Reflection
+@inherits LayoutComponentBase
+@inject NavigationManager navManager
+
+<PageTitle>@setTitle()</PageTitle>
 
 <div class="page">
     <div class="sidebar">
@@ -15,3 +19,38 @@
         </article>
     </main>
 </div>
+
+@code{
+    private string? title;
+    private List<string?> props = new();
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+    }
+    protected override void OnAfterRender(bool firstRender)
+    {
+        base.OnAfterRender(firstRender);
+    }
+    private string setTitle()
+    {
+        var url = navManager.Uri;
+        var currentPage = url.Replace(navManager.BaseUri, string.Empty);
+        Data.Models.PageRoutes routes = new();
+        props.Add(currentPage);
+        foreach (PropertyInfo prop in routes.GetType().GetProperties())
+        {
+
+            var propValue = Convert.ToString(prop.GetValue(routes, null));
+            if (currentPage != null && currentPage == propValue)
+            {
+                title = char.ToUpper(propValue[0]) + propValue.Substring(1);
+            }
+            if (string.IsNullOrEmpty(currentPage))
+            {
+                title = "Home";
+            }
+        }
+        return title;
+    }
+}
